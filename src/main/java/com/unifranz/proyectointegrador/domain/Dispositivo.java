@@ -1,20 +1,16 @@
 package com.unifranz.proyectointegrador.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Table(name = "dispositivos")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Dispositivo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,9 +18,5 @@ public class Dispositivo {
     private String nombre;
     private String marca;
     private double precio;
-feature/servicio-logica
-    private double activo = true; 
-=======
-    private Boolean activo = true;
-completar_crud_editar_eliminar
+    private boolean activo = true;
 }

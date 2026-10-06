@@ -1,4 +1,4 @@
-﻿package com.unifranz.proyectointegrador.application.service.impl;
+package com.unifranz.proyectointegrador.application.service.impl;
 
 import com.unifranz.proyectointegrador.application.dto.DispositivoDto;
 import com.unifranz.proyectointegrador.application.service.DispositivoService;
@@ -14,52 +14,48 @@ import java.util.stream.Collectors;
 public class DispositivoServiceImpl implements DispositivoService {
 
     @Autowired
-    private DispositivoRepository dispositivoRepository;
+    private DispositivoRepository repositorio;
 
     @Override
     public DispositivoDto guardar(DispositivoDto dto) {
-        Dispositivo entidad = new Dispositivo();
-        entidad.setNombre(dto.getNombre());
-        entidad.setMarca(dto.getMarca());
-        entidad.setPrecio(dto.getPrecio());
-        entidad.setActivo(true);
-
-        Dispositivo guardado = dispositivoRepository.save(entidad);
+        Dispositivo d = convertirAEntidad(dto);
+        Dispositivo guardado = repositorio.save(d);
         return convertirADto(guardado);
     }
 
     @Override
     public List<DispositivoDto> listarPorMarca(String marca) {
-        List<Dispositivo> lista = (marca == null || marca.isEmpty())
-                ? dispositivoRepository.findAll()
-                : dispositivoRepository.findByMarcaIgnoreCase(marca);
-
-        return lista.stream()
-                .filter(Dispositivo::isActivo)
+        return repositorio.findByMarcaAndActivoTrue(marca).stream()
                 .map(this::convertirADto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public DispositivoDto editar(Long id, DispositivoDto dto) {
-        Dispositivo entidad = dispositivoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Dispositivo no encontrado con id: " + id));
-
-        entidad.setNombre(dto.getNombre());
-        entidad.setMarca(dto.getMarca());
-        entidad.setPrecio(dto.getPrecio());
-
-        Dispositivo actualizado = dispositivoRepository.save(entidad);
+        Dispositivo d = repositorio.findById(id).orElseThrow();
+        d.setNombre(dto.getNombre());
+        d.setMarca(dto.getMarca());
+        d.setPrecio(dto.getPrecio());
+        d.setActivo(dto.isActivo());
+        Dispositivo actualizado = repositorio.save(d);
         return convertirADto(actualizado);
     }
 
     @Override
     public void eliminarLogico(Long id) {
-        Dispositivo entidad = dispositivoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Dispositivo no encontrado con id: " + id));
+        Dispositivo d = repositorio.findById(id).orElseThrow();
+        d.setActivo(false);
+        repositorio.save(d);
+    }
 
-        entidad.setActivo(false);
-        dispositivoRepository.save(entidad);
+    private Dispositivo convertirAEntidad(DispositivoDto dto) {
+        Dispositivo d = new Dispositivo();
+        d.setId(dto.getId());
+        d.setNombre(dto.getNombre());
+        d.setMarca(dto.getMarca());
+        d.setPrecio(dto.getPrecio());
+        d.setActivo(dto.isActivo());
+        return d;
     }
 
     private DispositivoDto convertirADto(Dispositivo d) {

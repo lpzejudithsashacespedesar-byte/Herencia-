@@ -1,5 +1,4 @@
 package com.unifranz.proyectointegrador.infrastructure.web.controller;
-
 import com.unifranz.proyectointegrador.application.dto.DispositivoDto;
 import com.unifranz.proyectointegrador.application.service.DispositivoService;
 import org.springframework.beans.factory.annotation.Autowired;

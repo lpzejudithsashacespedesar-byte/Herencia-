@@ -1,18 +1,12 @@
-package com.unifranz.proyectointegrador.application.service;
+package com.unifranz.proyectointegrador.infrastructure.persistence;
 
-import com.unifranz.proyectointegrador.application.dto.DispositivoDto;
+import com.unifranz.proyectointegrador.domain.Dispositivo;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
-feature/servicio-logica
-public interface DispositivoService {
-    DispositivoDto guardar(DispositivoDto dispositivoDto);
-    List<DispositivoDto> listarPorMarca(String marca);
-    DispositivoDto editar(Long id, DispositivoDto dispositivoDto);
-    void eliminarLogico(Long id);
-
+@Repository
 public interface DispositivoRepository extends JpaRepository<Dispositivo, Long> {
-    List<Dispositivo> findByMarcaIgnoreCase(String marca);
-    List<Dispositivo> findByActivoTrue();
     List<Dispositivo> findByMarcaAndActivoTrue(String marca);
-completar_crud_editar_eliminar
 }

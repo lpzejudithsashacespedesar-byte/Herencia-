@@ -1,4 +1,4 @@
-﻿package com.unifranz.proyectointegrador.application.dto;
+package com.unifranz.proyectointegrador.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
